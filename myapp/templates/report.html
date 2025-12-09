@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Expense Report — Smart Expense Tracker</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        body {
+            margin: 0;
+            padding: 40px 0;
+            font-family: "Poppins", sans-serif;
+            background: url('https://images.unsplash.com/photo-1526304640581-d334cdbbf45e')
+                center/cover no-repeat fixed;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        /* Dark overlay + blur */
+        body::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.55);
+            backdrop-filter: blur(7px);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Page Title */
+        h2 {
+            color: #fff;
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        /* Glass card */
+        .glass-card {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.2);
+            backdrop-filter: blur(14px);
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+            margin-bottom: 25px;
+        }
+
+        /* Form styling */
+        form label {
+            color: #fff;
+            font-weight: 500;
+        }
+
+        form select, form input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 6px;
+            margin-bottom: 16px;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.25);
+            color: #fff;
+            font-size: 14px;
+            outline: none;
+        }
+
+        form input:focus, form select:focus {
+            border-color: #00e0b5;
+            background: rgba(255,255,255,0.14);
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 10px 20px;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #00c8a0, #00e0b5);
+            color: #000;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 14px rgba(0,200,160,0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.25);
+            color: #fff;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.25);
+        }
+
+        /* Results Title */
+        h3 {
+            color: #fff;
+            margin-top: 20px;
+            font-weight: 600;
+        }
+
+        /* Table */
+        table {
+            width: 100%;
+            margin-top: 14px;
+            border-collapse: collapse;
+            color: #fff;
+        }
+
+        th {
+            background: rgba(255,255,255,0.1);
+            padding: 12px;
+            font-weight: 600;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.15);
+        }
+
+        tr:hover {
+            background: rgba(0,200,160,0.14);
+        }
+
+        .total-label {
+            color: #00e0b5;
+            font-weight: 700;
+            font-size: 18px;
+            margin-top: 10px;
+        }
+
+        .actions {
+            margin-top: 25px;
+        }
+
+        .actions .btn {
+            margin-right: 10px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #00e0b5;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2>Generate Expense Report</h2>
+
+    <div class="glass-card">
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">
+                <i class="fa fa-chart-line"></i> Generate Report
+            </button>
+        </form>
+    </div>
+
+    {% if report_data %}
+    <div class="glass-card">
+        <h3>{{ report_type|title }} Report — {{ selected_date }}</h3>
+
+        <table>
+            <tr>
+                <th>Date</th>
+                <th>Item</th>
+                <th>Cost</th>
+            </tr>
+
+            {% for exp in report_data %}
+            <tr>
+                <td>{{ exp.ExpenseDate }}</td>
+                <td>{{ exp.ExpenseItem }}</td>
+                <td>₹ {{ exp.ExpenseCost }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <p class="total-label">Total: ₹{{ total }}</p>
+
+        <div class="actions">
+            <a href="{% url 'download_pdf' report_type selected_date.year selected_date.month selected_date.day %}">
+                <button class="btn btn-primary"><i class="fa fa-file-pdf"></i> Download PDF</button>
+            </a>
+
+            <a href="{% url 'download_excel' report_type selected_date.year selected_date.month selected_date.day %}">
+                <button class="btn btn-primary"><i class="fa fa-file-excel"></i> Download Excel</button>
+            </a>
+        </div>
+    </div>
+    {% endif %}
+
+    <a href="{% url 'dashboard' %}" class="back-link">
+        ← Back to Dashboard
+    </a>
+
+</div>
+
+</body>
+</html>

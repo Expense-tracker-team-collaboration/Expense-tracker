@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Your Expenses — Smart Expense Tracker</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        body {
+            margin: 0;
+            padding: 40px 0;
+            font-family: "Poppins", sans-serif;
+
+            background: url('https://images.unsplash.com/photo-1526304640581-d334cdbbf45e')
+                center/cover no-repeat fixed;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        /* Dark blur overlay */
+        body::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.55);
+            backdrop-filter: blur(7px);
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            max-width: 900px;
+            margin: auto;
+        }
+
+        /* Page Title */
+        h2 {
+            color: #fff;
+            text-align: center;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        /* Add New Expense Button */
+        .add-btn {
+            display: inline-block;
+            padding: 10px 18px;
+            margin-bottom: 20px;
+
+            background: linear-gradient(135deg, #00c8a0, #00e0b5);
+            color: #000;
+            font-weight: 700;
+            border-radius: 10px;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .add-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0,200,160,0.4);
+        }
+
+        /* Glass Table Card */
+        .glass-card {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.2);
+            backdrop-filter: blur(12px);
+            border-radius: 14px;
+            padding: 20px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+        }
+
+        /* Table Styling */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            color: #fff;
+        }
+
+        th {
+            background: rgba(255,255,255,0.1);
+            padding: 12px;
+            font-weight: 600;
+            border-bottom: 1px solid rgba(255,255,255,0.25);
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.12);
+        }
+
+        tr:hover {
+            background: rgba(0,200,160,0.15);
+            transition: 0.25s;
+        }
+
+        .empty-row {
+            text-align: center;
+            color: #ddd;
+            padding: 20px;
+        }
+
+        /* Action buttons */
+        .action-btn {
+            color: #00e0b5;
+            margin-right: 12px;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .action-btn:hover {
+            text-decoration: underline;
+        }
+
+        .delete-btn {
+            color: #ff6b6b;
+        }
+        /* Back link */
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 16px;
+            font-size: 16px;
+            color: #00e0b5;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h2>Your Expenses</h2>
+
+    <a href="{% url 'create_expense' %}" class="add-btn">
+        <i class="fa fa-plus"></i> Add New Expense
+    </a>
+
+    <div class="glass-card">
+        <table>
+            <tr>
+                <th>Date</th>
+                <th>Item</th>
+                <th>Cost</th>
+                <th>Actions</th>
+            </tr>
+
+            {% for exp in expenses %}
+            <tr>
+                <td>{{ exp.ExpenseDate }}</td>
+                <td>{{ exp.ExpenseItem }}</td>
+                <td>₹ {{ exp.ExpenseCost }}</td>
+                <td>
+                    <a class="action-btn" href="{% url 'edit_expense' exp.id %}">
+                        <i class="fa fa-pen"></i> Edit
+                    </a>
+                    <a class="action-btn delete-btn" href="{% url 'delete_expense' exp.id %}">
+                        <i class="fa fa-trash"></i> Delete
+                    </a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4" class="empty-row">No expenses found.</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+<a href="{% url 'dashboard' %}" class="back-link">← Back to Dashboard</a>
+</div>
+
+</body>
+</html>

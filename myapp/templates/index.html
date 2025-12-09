@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Smart Expense Tracker — Welcome</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: "Poppins", sans-serif;
+            background: url('https://images.unsplash.com/photo-1526304640581-d334cdbbf45e')
+                center/cover no-repeat fixed;
+            height: 100vh;
+        }
+
+        body::before {
+            content:"";
+            position: fixed;
+            inset: 0;
+            backdrop-filter: blur(8px);
+            background: rgba(0,0,0,0.55);
+            z-index: -1;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: center;
+            color: white;
+        }
+
+        h1 {
+            font-size: 42px;
+            font-weight: 700;
+            color: #00f5d4;
+            margin-bottom: 10px;
+        }
+
+        h3 {
+            font-size: 22px;
+            font-weight: 300;
+            color: #d7f7ff;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: rgba(0,0,0,0.45);
+            padding: 30px;
+            border-radius: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+            border: 1px solid rgba(255,255,255,0.25);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+        }
+
+        .buttons {
+            margin-top: 25px;
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 14px 25px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #00e0b5, #00c8a0);
+            color: #00332e !important;
+            font-weight: 800;
+            text-decoration: none;
+            font-size: 16px;
+            width: 180px;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+        }
+
+        .footer {
+            margin-top: 40px;
+            font-size: 14px;
+            color: #d7f7ff;
+        }
+
+        .highlight {
+            color: #00f5d4;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="card">
+        <h1>Smart Expense Tracker</h1>
+        <h3>Take control of your money with smart insights, charts and reports.</h3>
+
+        <div class="buttons">
+            <a href="{% url 'login' %}" class="btn">Login</a>
+            <a href="{% url 'create_user' %}" class="btn">Create Account</a>
+        </div>
+
+        <div class="footer">
+            Track your <span class="highlight">expenses</span>, set <span class="highlight">budgets</span>, manage <span class="highlight">income</span> and view powerful <span class="highlight">reports</span>.
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

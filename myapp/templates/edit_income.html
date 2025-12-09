@@ -1,0 +1,9 @@
+<h2>Edit Income</h2>
+
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Update</button>
+</form>
+
+<a href="{% url 'income_list' %}">Back</a>

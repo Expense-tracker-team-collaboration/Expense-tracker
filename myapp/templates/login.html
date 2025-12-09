@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login — Smart Expense Tracker</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: "Poppins", sans-serif;
+
+            background: url('https://images.unsplash.com/photo-1526304640581-d334cdbbf45e')
+                center/cover no-repeat fixed;
+        }
+
+        /* Background Blur Overlay */
+        body::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.55);
+            backdrop-filter: blur(7px);
+        }
+
+        .login-card {
+            position: relative;
+            width: 380px;
+            padding: 35px;
+            border-radius: 18px;
+
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.2);
+            backdrop-filter: blur(14px);
+
+            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+            z-index: 2;
+        }
+
+        .login-card h2 {
+            color: #fff;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .message {
+            background: rgba(255,80,80,0.15);
+            padding: 10px;
+            color: #ff6b6b;
+            border-left: 3px solid #ff6b6b;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        /* -------- INPUT GROUP (WITH ICONS) -------- */
+        .input-group {
+            position: relative;
+            margin-bottom: 18px;
+        }
+
+        .input-group i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #e0e0e0;
+            font-size: 15px;
+            pointer-events: none;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 14px 12px 45px; /* space for icon */
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.25);
+
+            background: rgba(255,255,255,0.12);
+            color: #fff;
+            font-size: 15px;
+            outline: none;
+            transition: 0.25s;
+            box-sizing: border-box;
+        }
+
+        .input-group input:focus {
+            border-color: #00e0b5;
+            background: rgba(255,255,255,0.20);
+        }
+
+        /* -------- BUTTON -------- */
+        .btn-login {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #00c8a0, #00e0b5);
+            border: none;
+            border-radius: 10px;
+            color: #000;
+            font-weight: 700;
+            font-size: 15px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(0, 200, 160, 0.4);
+        }
+
+        .register-text {
+            text-align: center;
+            color: #ddd;
+            font-size: 14px;
+            margin-top: 15px;
+        }
+
+        .register-text a {
+            color: #00e0b5;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .register-text a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-card">
+        <h2>Login</h2>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="message">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <!-- Email Field -->
+            <div class="input-group">
+                <i class="fa-solid fa-envelope"></i>
+                <input type="email" name="email" placeholder="Email" required>
+            </div>
+
+            <!-- Password Field -->
+            <div class="input-group">
+                <i class="fa-solid fa-lock"></i>
+                <input type="password" name="password" placeholder="Password" required>
+            </div>
+
+            <button type="submit" class="btn-login">Login</button>
+        </form>
+
+        <p class="register-text">
+            Don't have an account?
+            <a href="{% url 'create_user' %}">Register here</a>
+        </p>
+    </div>
+
+</body>
+</html>
